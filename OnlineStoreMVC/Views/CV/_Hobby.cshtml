@@ -1,0 +1,19 @@
+﻿@model OnlineStoreMVC.Models.Hobby
+
+@using (Ajax.BeginForm(null, null, null, new AjaxOptions() { HttpMethod = "Post" }, new { @class = "hobbForm" }))
+{
+    using (Html.Panel("Zainteresowania", PanelStyle.Primary))
+    {
+        @Html.Hidden("UserName",User.Identity.Name)
+       
+        @Html.LabelFor(model => model.HobbyDesc)
+
+        @Html.TextAreaFor(model => model.HobbyDesc, new { @class = "form-control" })
+
+
+
+    }
+
+
+}
+

@@ -1,0 +1,32 @@
+﻿@model OnlineStoreMVC.Models.Photo
+
+<h3>Zdjęcie profilowe</h3>
+<br/>
+<div id="status">  
+    <img src="@ViewBag.ImageUrl" alt=" nieznany" id="profilePhoto" class="img-rounded img-responsive">
+    <br/>
+</div>
+
+@using (Ajax.BeginForm("_PhotoAsyncUpload", "User", new AjaxOptions() { HttpMethod = "POST" }, new { enctype = "multipart/form-data", @id="formPhoto" }))
+{
+    
+    
+     @Html.AntiForgeryToken()
+    <label class="btn btn-primary" for="File">
+        <b>Wybierz swoje zdjęcie</b>
+
+
+        @Html.TextBoxFor(model => model.File, new { @type = "file", @style = "display:none", @onchange = "$('#formPhoto').submit();" })
+
+    </label>
+     <br/>
+    <br/>
+    @Html.ValidationMessageFor(model=>model.File)
+
+   
+     
+}
+<br/>
+<br/>
+
+

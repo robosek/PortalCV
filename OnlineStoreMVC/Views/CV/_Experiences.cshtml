@@ -1,0 +1,44 @@
+﻿@model OnlineStoreMVC.Models.Experience
+
+
+
+@using (Ajax.BeginForm(null, null, null, new AjaxOptions() { HttpMethod = "Post" }, new { @class = "expForm" }))
+{
+    
+        using (Html.Panel("Doświadczenie", PanelStyle.Primary))
+        {
+            @Html.Hidden("UserName",User.Identity.Name)
+
+            @Html.LabelFor(model => model.JobTitle)
+
+            @Html.TextBoxFor(model => model.JobTitle, new { @class = "form-control" })
+
+
+            @Html.LabelFor(model => model.CompanyName)
+
+            @Html.TextBoxFor(model => model.CompanyName, new { @class = "form-control" })
+
+            <div class="row">
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.JobStartTime)
+                    @Html.TextBoxFor(model => model.JobStartTime, new { @class = "form-control", @placeholder = "MM/DD/YYYY" })
+                </div>
+                <div class="col-md-4">
+                    @Html.LabelFor(model => model.JobEndTime)
+                    @Html.TextBoxFor(model => model.JobEndTime, new { @class = "form-control", @placeholder = "MM/DD/YYYY" })
+                </div>
+            </div>
+
+
+
+
+            @Html.LabelFor(model => model.Description)
+
+            @Html.TextAreaFor(model => model.Description, new { @class = "form-control" })
+
+
+        }
+
+    
+}
+

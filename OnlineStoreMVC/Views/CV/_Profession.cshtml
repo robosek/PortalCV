@@ -1,0 +1,19 @@
+﻿@model OnlineStoreMVC.Models.Profession
+
+@using (Ajax.BeginForm(null, null, null, new AjaxOptions() { HttpMethod = "Post" }, new { @class = "profForm" }))
+{
+    using (Html.Panel("Twój zawód", PanelStyle.Primary))
+    {
+        @Html.Hidden("UserName", User.Identity.Name)
+
+        @Html.LabelFor(model => model.ProfessionName)
+
+        @Html.TextBoxFor(model => model.ProfessionName, new { @class = "form-control",@placeholder="Front-end-developer" })
+
+
+
+    }
+
+
+}
+

@@ -1,0 +1,48 @@
+﻿@model OnlineStoreMVC.Models.Education
+
+
+
+@using (Ajax.BeginForm(null, null, null, new AjaxOptions() { HttpMethod = "Post" }, new { @class = "eduForm" }))
+{
+
+    using (Html.Panel("Edukcja", PanelStyle.Primary))
+    {
+        @Html.Hidden("UserName", User.Identity.Name)
+
+        @Html.LabelFor(model => model.SchollName)
+
+        @Html.TextBoxFor(model => model.SchollName, new { @class = "form-control" })
+
+
+        @Html.LabelFor(model => model.TypeOfSchool)
+
+       <select class="form-control" name="TypeOfSchool">
+           <option value="Liceum">Liceum</option>
+           <option value="Technikum">Technikum</option>
+           <option value="Szkoła zawodowa">Szkoła zawodowa</option>
+           <option value="Uniwersytet">Uniwersytet</option>
+           <option value="Politechnika">Politechnika</option>
+
+
+
+        </select>
+
+        <div class="row">
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.StartDate)
+                @Html.TextBoxFor(model => model.StartDate, new { @class = "form-control", @placeholder = "MM/DD/YYYY" })
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.EndDate)
+                @Html.TextBoxFor(model => model.EndDate, new { @class = "form-control", @placeholder = "MM/DD/YYYY" })
+            </div>
+        </div>
+
+
+    }
+
+
+}
+
+
+

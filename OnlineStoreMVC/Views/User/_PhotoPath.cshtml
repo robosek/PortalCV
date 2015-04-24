@@ -1,0 +1,13 @@
+﻿<span>Czy zdjęcie profilowe narusza regulamin ?</span>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+@using (Ajax.BeginForm("DeletePhoto", "User", new { username = ViewData["username"]}, new AjaxOptions
+                                                    {
+                                                        Confirm = "Jesteś pewny że chcesz usunąć to zdjęcie ?",
+                                                        HttpMethod = "Post",
+                                                        OnSuccess = "alert('Poprawnie usunięto zdjęcie')",
+                                                        InsertionMode = InsertionMode.Replace,
+                                                        UpdateTargetId = "deleteImage"
+                                                    }))
+{
+    <button type="submit" class=" btn-danger btn btn-default btn-sm" value="Usuń">Usuń</button>
+}

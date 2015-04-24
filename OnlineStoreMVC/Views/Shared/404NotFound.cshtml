@@ -1,0 +1,27 @@
+﻿@{
+    Layout = null;
+    ViewBag.Title = "Error";
+}
+
+<style>
+    #errorContent {
+        height: 100%;
+        width: 100%;
+        text-align: center;
+        background-color: #5a76b9;
+    }  
+    #errorLink {
+        color: white;
+        text-align: center;
+        font-size: 40px;
+        text-decoration: none;
+    }
+</style>
+
+<div style="width: 100%; background-color: #5a76b9; text-align: center;">
+   @Html.ActionLink("Wróć na stronę główną","Index","Home",null,new{@id="errorLink"})
+</div>
+<div id="errorContent">
+    
+    <img src="@Url.Content("~/Content/404notFound.jpg")" alt="Error image" class="img-responsive"/>
+</div>

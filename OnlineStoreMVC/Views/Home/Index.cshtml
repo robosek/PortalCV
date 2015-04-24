@@ -1,0 +1,27 @@
+﻿@model List<OnlineStoreMVC.Models.UserViewModel>
+           @{
+               ViewData["PageID"] = "Main";
+               ViewData["Video"] = "Video";
+           }
+<script src="~/Scripts/Slider.js"></script>
+<style>
+    h2 {
+        text-align: center;
+    }
+</style>
+<br/>
+<hr>
+<div style="width: 100%; height: 100%; background-color: white">
+    <h2>Ostatnio zarejestrowani użytkownicy</h2>
+    <div id="test">
+        @{ Html.RenderPartial("_Slider", Model); }
+
+    </div>
+</div>
+<br />
+<hr>
+<div id="aboutCompanny" style="text-align: center; background-color: white;">
+    <h2>Torchę o nas</h2>
+    <br />
+    <p style="font-size: 22px;">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent maximus convallis auctor. Praesent porta aliquam urna, eu pretium nibh congue sit amet. Aliquam venenatis, tortor id bibendum convallis, libero sapien interdum erat, quis vestibulum nunc quam eu ipsum. Aenean viverra eu est eget consequat. Nullam sed risus quam. Pellentesque dignissim tortor vitae felis congue laoreet. Sed ac velit est. Duis nec ante libero. Sed congue nunc fermentum, euismod purus sit amet, volutpat sapien. Nam risus est, dignissim sed enim id, pellentesque malesuada erat.</p>
+</div>

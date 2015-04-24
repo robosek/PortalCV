@@ -1,0 +1,327 @@
+﻿@model Tuple<OnlineStoreMVC.Models.CvModel, OnlineStoreMVC.Models.UserViewModel>
+<link href="~/Content/base.css" rel="stylesheet" />
+<link href="~/Content/grid.css" rel="stylesheet" />
+<link href="~/Content/layout.css" rel="stylesheet" />
+<link href="~/Content/jquery.bxslider.css" rel="stylesheet" />
+<link href="~/Content/magnific-popup.css" rel="stylesheet" />
+<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700">
+<link href="~/Content/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/default.css" rel="stylesheet" />
+<link href="~/Content/paperEffect.css" rel="stylesheet" />
+@if (ViewBag.UserIsEmpty != null)
+{
+    <h1>Aby wygerować CV wypełni podastawowe dane w zakładce @Html.ActionLink("Edytuj profil", "Index", "User")</h1>
+}
+else
+{
+    <h2>Moje CV</h2>
+    <div id="cvManage">
+        <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Usunięcie CV</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            Za chwilę nastąpi usunięcie twojego CV
+                        </p>
+                        <p>
+                            <strong>
+                                Czy jesteś pewien że chcesz usunąć swoje CV?
+                            </strong>
+                        </p>
+                        @using (Html.BeginForm("DeleteCv", "CV", FormMethod.Post, new { role = "form", @id = "delete-form" }))
+                        {
+                            @Html.Hidden("userName", User.Identity.Name)
+                            @Html.AntiForgeryToken()
+
+                        }
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-red"
+                                onclick="$('#delete-form').submit();">
+                            Tak, usuń moje CV
+                        </button>
+                        <button type="button" class="btn btn-default"
+                                data-dismiss="modal">
+                            Nie, nie usuwaj
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-inline" }))
+        {
+            <span>Wybierz swój sektor pracy</span>
+            <div class="form-group">
+                <select class="form-control" name="LanguageSpeakLevel">
+                    <option value="Administracja">Administracja</option>
+                    <option value="Rachunkowość">Rachunkowość</option>
+                    <option value="Mechanika">Mechanika</option>
+                    <option value="Gastronomia">Gastronomia</option>
+                    <option value="Informatyka">Informatyka</option>
+                    <option value="Informatyka">Zarządzanie</option>
+                </select>
+            </div>
+            <br />
+            <input type="submit" value="Opublikuj moje CV" class="btn-primary btn btn-blue" />
+            <div class="form-group">
+                <input type="button" class="btn-primary btn btn-red" value="Usuń" data-toggle="modal" data-target="#deleteConfirmationModal" />
+            </div>
+        }
+    </div>
+    <br />
+    <br />
+    <div class="paper effect2" style="width: 100%; height: 100%; background-color: white;">
+        <div id="header">
+            <div class="row cv-section">
+                <div class="span9">
+
+                    <div class="cv-section-title">
+                        <!--Temporary Photo-->
+                        <img src="@Url.Content("/Content/Uploads/Users/" + User.Identity.Name + ".jpg")" width="200" height="200" alt="">
+
+                        <h1 style="font-family: 'Alegreya Sans', sans-serif;">
+                            @Model.Item2.Name @Model.Item2.Surname
+                            <small>@Model.Item1.Profession.ProfessionName</small>
+                        </h1>
+
+                    </div><!-- end .cv-section-title -->
+
+                </div><!-- end .span9 -->
+                <div class="span3">
+
+                    <div class="cv-item">
+
+                        <p class="last">
+                            <span class="hidden-tablet"><b>Email:</b> </span><a href="mailto:@Model.Item2.Email">@Model.Item2.Email</a><br />
+                            <br><span class="hidden-tablet"><b>Telefon:</b> </span>@Model.Item2.PhoneNumber<br />
+                            <br><span class="hidden-tablet"><b>Telefon kom:</b> </span>@Model.Item2.CellNumber<br />
+                            <br><span class="hidden-tablet"><b>Kod-pocztowy:</b> </span>@Model.Item2.PostalCode<br />
+                            <br><span class="hidden-tablet"><b>Adres:</b> </span>@Model.Item2.Address<br />
+                            <br><span class="hidden-tablet"><b>Miasto:</b> </span>@Model.Item2.City<br />
+                            <br><span class="hidden-tablet"><b>Kraj: </b></span>@Model.Item2.Country
+
+                        </p>
+
+                    </div><!-- end .cv-item -->
+
+                </div><!-- end .span3 -->
+            </div><!-- end .cv-section -->
+            <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+        </div><!-- end #header -->
+        <div id="content">
+
+            <div class="row cv-section">
+                <div class="span3">
+
+                    <div class="cv-section-title">
+
+                        <h2>Doswiadczenie w pracy</h2>
+
+                    </div><!-- end .cv-section-title -->
+
+                </div><!-- end .span3 -->
+                <div class="span9">
+
+                    @foreach (var item in Model.Item1.Experiences)
+                    {
+                        <div class="cv-item">
+
+                            <p class="period">@item.JobStartTime - @item.JobEndTime</p>
+
+                            <h3><strong>@item.CompanyName</strong></h3>
+                            <h4>@item.JobTitle</h4>
+
+                            <br>
+
+                            <p>
+                                @item.Description
+                            </p>
+
+                        </div>
+
+                    }
+                    <!-- end .cv-item -->
+                  <!-- end .cv-item -->
+
+                </div><!-- end .span9 -->
+            </div><!-- end .cv-section -->
+            <div class="row cv-section">
+                <div class="span3">
+
+                    <div class="cv-section-title">
+
+                        <h2>Edukacja</h2>
+
+                    </div><!-- end .cv-section-title -->
+
+                </div><!-- end .span3 -->
+                <div class="span9">
+
+                    @foreach (var item in Model.Item1.Educations)
+                    {
+                        <div class="cv-item">
+
+                            <p class="period">@item.StartDate - @item.EndDate</p>
+
+                            <h3><strong>@item.SchollName</strong></h3>
+                            <h4>@item.TypeOfSchool</h4>
+
+                            <br>
+
+                         
+
+                        </div>
+
+                    }
+                    <!-- end .cv-item -->
+                  <!-- end .cv-item -->
+
+                </div><!-- end .span9 -->
+            </div><!-- end .cv-section -->
+
+            <div class="row cv-section">
+                <div class="span3">
+
+                    <div class="cv-section-title">
+
+                        <h2>Umiejetnosci</h2>
+
+                    </div><!-- end .cv-section-title -->
+
+                </div><!-- end .span3 -->
+                <div class="span9">
+
+                    @foreach (var item in Model.Item1.Skills)
+                    {
+                        <div class="cv-item">
+
+                            <h3 class="text-uppercase"><strong>@item.SkillName</strong></h3>
+
+                            <br class="clear">
+
+                            <p class="last">
+                                @item.SkillDescription
+                            </p>
+
+                        </div><!-- end .cv-item -->
+
+                    }
+
+                </div><!-- end .span9 -->
+            </div><!-- end .cv-section -->
+
+            <div class="row cv-section">
+                <div class="span3">
+
+                    <div class="cv-section-title">
+
+                        <h2>Jezyki obce</h2>
+
+                    </div><!-- end .cv-section-title -->
+
+                </div><!-- end .span3 -->
+                <div class="span9">
+
+                    @foreach (var item in Model.Item1.Languages)
+                    {
+                        <div class="cv-item">
+
+                            <p class="period">@item.LanguageSpeakLevel</p>
+
+                            <h3 class="text-uppercase"><strong>@item.LanguageName</strong></h3>
+
+                            <br class="clear">
+
+                        </div><!-- end .cv-item -->
+
+                    }
+
+
+                </div><!-- end .span9 -->
+            </div><!-- end .cv-section -->
+
+            <div class="row cv-section">
+                <div class="span3">
+
+                    <div class="cv-section-title">
+
+                        <h2>Certyfikaty</h2>
+
+                    </div><!-- end .cv-section-title -->
+
+                </div><!-- end .span3 -->
+                <div class="span9">
+
+                    @foreach (var item in Model.Item1.Certificates)
+                    {
+                        <div class="cv-item">
+
+                            <h3><strong>Certyfikat @item.CertificateName</strong></h3>
+                            <h4>@item.CertificateName</h4>
+
+                            <br>
+
+                            <p class="last">
+                                @item.CertificateDesc
+                            </p>
+
+                        </div><!-- end .cv-item -->
+
+                    }
+
+
+                </div><!-- end .span9 -->
+            </div><!-- end .cv-section -->
+
+            <div class="row cv-section">
+                <div class="span3">
+
+                    <div class="cv-section-title">
+
+                        <h2>O mnie</h2>
+
+                    </div><!-- end .cv-section-title -->
+
+                </div><!-- end .span3 -->
+                <div class="span9">
+
+
+                    <div class="cv-item">
+
+                        <p class="last">
+                            @Model.Item1.Hobby.HobbyDesc
+                        </p>
+
+                    </div><!-- end .cv-item -->
+
+
+
+
+                </div><!-- end .span9 -->
+            </div><!-- end .cv-section -->
+            <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+        </div><!-- end #content -->
+        <div id="footer">
+
+            <!-- /// FOOTER     ///////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+            <div class="row">
+                <div class="span12">
+
+
+
+                    <h4 class="copyright">&copy; @DateTime.Now.Year @Model.Item2.Name @Model.Item2.Surname. <span class="hidden-phone">All rights reserved.</span></h4>
+
+                </div><!-- end .span12 -->
+            </div><!-- end .row -->
+            <!-- //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////// -->
+
+        </div><!-- end #footer -->
+    </div>
+}

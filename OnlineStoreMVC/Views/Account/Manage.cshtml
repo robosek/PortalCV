@@ -1,0 +1,309 @@
+﻿@using OnlineStoreMVC.Models;
+@using Microsoft.AspNet.Identity;
+
+
+<link href="~/Content/paperEffect.css" rel="stylesheet" />
+@{
+    ViewBag.Title = "Edytuj swój profil";
+    ViewData["PageID"] = "Main";
+    
+}
+
+<div class="paper effect2" style="height: 100%; width: 100%; background-color: white;">
+    <h2>&nbsp;&nbsp;@ViewBag.Title.</h2>
+    <p>&nbsp;&nbsp;Cześć <strong>@User.Identity.GetUserName()</strong>!</p>
+    <p class="text-success">@ViewBag.StatusMessage</p>
+    <div id="transactionInfo" class="alert alert-success alert-Dismissible" role="alert" style="display:none;">
+        <button type="button" class="close" onclick="$('.alert').hide();">
+            <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+        </button>
+        <span id="alertText"><b></b></span>
+
+    </div>
+    @{Html.RenderAction("_UserProfile", "User");}
+
+
+    <div class="row">
+        <div class="col-md-12">
+            @if (ViewBag.HasLocalPassword)
+            {
+                @Html.Partial("_ChangePasswordPartial")
+            }
+            else
+            {
+                @Html.Partial("_SetPasswordPartial")
+            }
+
+
+        </div>
+    </div>
+
+    @section scripts{
+
+
+        <script src="~/Scripts/jquery.signalR-2.2.0.js"></script>
+        <script src="~/signalr/hubs"></script>
+        <script type="text/javascript" language="javascript">
+
+            $(document).ready(function () {
+
+                $('#transactionInfo').css('display', 'normal');
+                $('#transactionInfo').hide();
+
+
+
+                updateProgressbar();
+
+
+
+
+            });
+
+
+            function updateProgressbar() {
+
+                var textBoxes = $('form input:text');
+
+                // alert(textBoxes.length);
+
+                var count = 0;
+
+                for (var i = 0; i < textBoxes.length; i++) {
+
+                    if (textBoxes[i].value !== "" && (textBoxes[i].id !== "searchquery")) {
+                        count++;
+                    }
+
+                }
+                // alert(count);
+
+
+                $(".progress-bar").width('0%');
+                var progressNotifier = $.connection.progressBarHub;
+
+                progressNotifier.client.sendMessage = function (message) {
+
+                    updateProgress(message);
+                };
+                $.connection.hub.start().done(function () {
+
+                    progressNotifier.server.sendProgress(count);
+                });
+
+
+
+
+
+
+
+
+            }
+            function updateProgress(message) {
+                $(".progress-bar").width(message);
+                $("#procentDataCount").empty();
+                if (message === "100%") {
+                    $("#procentDataCount").text('Wypełniono ' + message + ' danych');
+                    $('div.progress-bar.progress-bar-info').removeClass('progress-bar-info').addClass('progress-bar-success');
+                }
+                else {
+                    $("#procentDataCount").text('Wypełniono ' + message + ' danych');
+
+                    var div = $('div.progress-bar.progress-bar-info');
+
+                    if (div.length !== 0) {
+                        $('div.progress-bar.progress-bar-success').removeClass('progress-bar-success').addClass('progress-bar-info');
+                    }
+
+                }
+
+
+            }
+
+        </script>
+
+
+
+
+
+
+
+
+
+
+
+
+        <script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+        <script src="http://malsup.github.com/jquery.form.js"></script>
+        <script>
+            function onTransComplete(obj) {
+
+
+
+                var div = $('#aboutUserDiv');
+
+
+                var textDiv = $(div).text().trim().length;
+
+                alert(textDiv);
+                var text = "";
+
+                if (textDiv === 1391 || textDiv === 1397) {
+                    var divsAlert1 = $('.alert-danger');
+
+                    if (divsAlert1.length > 0) {
+
+                        $('#transactionInfo').removeClass('alert-danger').addClass('alert-success');
+                    }
+
+
+
+
+
+
+
+                    text = "Dane zapisano pomyślnie";
+                    updateProgressbar();
+                }
+                else {
+                    var divsAlert2 = $('.alert-success');
+
+                    if (divsAlert2.length > 0) {
+
+                        $('#transactionInfo').removeClass('alert-success').addClass('alert-danger');
+
+                    }
+
+                    text = "Nie zapisano danych";
+
+
+                }
+
+                $('#alertText').empty();
+                $('#alertText').text(text);
+
+                $('#transactionInfo').show();
+
+
+
+            }
+
+
+            function onPhotoComplete(text) {
+
+                $('#alertText').empty();
+                $('#alertText').text(text);
+                var divsAlert1 = $('.alert-danger');
+
+                if (divsAlert1.length > 0) {
+                    alert('Danger lenght' + divsAlert1.length);
+                    $('#transactionInfo').removeClass('alert-danger').addClass('alert-success');
+                }
+
+                $('#transactionInfo').show();
+
+            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+            (function () {
+
+                var status = $('#status');
+
+                var koniec = "";
+
+                $('#formPhoto').ajaxForm({
+                    beforeSubmit: function () {
+                        var answer = confirm("Czy na pewno chcesz zmienić swoje zdjęcie profilowe ?");
+
+                        if (answer !== true) {
+
+                            return false;
+
+                        }
+
+
+
+
+                    },
+
+                    uploadProgress: function (event, position, total, percentComplete) {
+
+
+                    },
+                    success: function (d) {
+
+                        if (d[0] !== '/') {
+                            koniec = "error";
+                        }
+                        else {
+                            koniec = '<img src="' + d + "?" + new Date().getTime().toString() + '"id="profilePhoto" alt=" nieznany" class="img-rounded img-responsive"><br/>';
+
+                        }
+
+
+
+
+                    },
+                    complete: function (xhr) {
+
+                        status.empty();
+                        status.html(koniec);
+                        if (koniec !== "error") {
+
+                            onPhotoComplete('Twoje zdjecie zostalo dodano poprawnie');
+                        }
+
+                    },
+                    error: function () {
+
+                        alert("Wystąpił problem podczas dodawania nowego zdjęcia. Spróbuj ponownie za chwilę");
+
+                    }
+
+                });
+            })();
+
+
+
+        </script>
+    }
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                 
+
+                    
+
+                   
+                    
+                   
+                   
+
+                    
+
+
+
+

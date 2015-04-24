@@ -1,0 +1,173 @@
+﻿@model OnlineStoreMVC.Models.UserViewModel
+
+
+
+    <div id="aboutUserDiv" style="text-align:left">
+     
+    @using (Ajax.BeginForm("_AboutUser", null, new AjaxOptions() { HttpMethod = "Post", InsertionMode = InsertionMode.Replace, UpdateTargetId = "aboutUserDiv", OnSuccess = "onTransComplete" }, new { @class = "form-horizontal", role = "form" }))
+    { <h3>Dane kontaktowe</h3>
+        
+       
+        @Html.ValidationSummary("",new {@style="display:none"})
+        @Html.AntiForgeryToken()
+       
+
+        @Html.HiddenFor(model => model.Nickname, new { @Value = User.Identity.Name })
+        @Html.HiddenFor(model => model.UserID)
+
+        @Html.ValidationMessageFor(model => model.Name, null, new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Name, new { @class = "sr-only" })
+            <div class="col-md-8 input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-user"></span></span>
+                @Html.TextBoxFor(model => model.Name, new { @class = "form-control", placeholder = "Imie", @Value = (Model.Name == null) ? "" : Model.Name })
+            </div>
+        </div>
+
+
+
+
+       @Html.ValidationMessageFor(model => model.Secondname, null, new { @class = "text-danger" })
+        <div class="form-group">
+           
+            @Html.LabelFor(model => model.Secondname, new { @class = "sr-only" })
+            <div class="col-md-8 input-group">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-user">
+                    </span>
+                </span>
+
+                @Html.TextBoxFor(model => model.Secondname, new { @class = "form-control", placeholder = "Drugie imie", @Value = (Model.Secondname == null) ? "" : Model.Secondname })
+                
+
+
+
+
+            </div>
+        </div>
+
+        @Html.ValidationMessageFor(model => model.Surname, null, new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Surname, new { @class = "sr-only" })
+            <div class="col-md-8 input-group">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-user">
+                    </span>
+                </span>
+
+                @Html.TextBoxFor(model => model.Surname, new { @class = "form-control", placeholder = "Nazwisko", @Value = (Model.Surname == null) ? "" : Model.Surname })
+
+            </div>
+        </div>
+
+
+
+        @Html.ValidationMessageFor(model => model.Email, null, new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Email, new { @class = "sr-only" })
+            <div class="col-md-8 input-group">
+
+                <span class="input-group-addon"><span class="glyphicon glyphicon-envelope"></span></span>
+                @Html.TextBoxFor(model => model.Email, new { @class = "form-control", placeholder = "Email", @Value = (Model.Email == null) ? "" : Model.Email })
+
+            </div>
+        </div>
+
+        @Html.ValidationMessageFor(model => model.Country, null, new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Country, new { @class = "sr-only" })
+            <div class="col-md-8 input-group">
+                <span class="input-group-addon"><span class="glyphicon glyphicon-globe"></span></span>
+                @Html.TextBoxFor(model => model.Country, new { @class = "form-control", placeholder = "Państwo", @Value = (Model.Country == null) ? "" : Model.Country })
+
+            </div>
+        </div>
+
+        @Html.ValidationMessageFor(model => model.City, null, new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.City, new { @class = "sr-only" })
+            <div class="col-md-8 input-group">
+                <span class="input-group-addon"><b>M</b></span>
+                @Html.TextBoxFor(model => model.City, new { @class = "form-control", placeholder = "Miasto", @Value = (Model.City == null) ? "" : Model.City })
+
+            </div>
+        </div>
+
+         @Html.ValidationMessageFor(model => model.PostalCode, null, new { @class = "text-danger" })
+        <div class="form-group">
+           
+            @Html.LabelFor(model => model.PostalCode, new { @class = "sr-only" })
+            <div class="col-md-8  input-group">
+               
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-map-marker"></span>
+                </span>
+                @Html.TextBoxFor(model => model.PostalCode, new { @class = "form-control", placeholder = "Kod-pocztowy", @Value = (Model.PostalCode == null) ? "" : Model.PostalCode })
+
+
+            </div>
+        </div>
+        @Html.ValidationMessageFor(model => model.Address, null, new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Address, new { @class = "sr-only" })
+            <div class="col-md-8  input-group">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-home"></span>
+                </span>
+                @Html.TextBoxFor(model => model.Address, new { @class = "form-control", placeholder = "Adres", @Value = (Model.Address == null) ? "" : Model.Address })
+
+            </div>
+        </div>
+
+        @Html.ValidationMessageFor(model => model.PhoneNumber, null, new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.PhoneNumber, new { @class = "sr-only" })
+            <div class="col-md-8  input-group">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-phone-alt"></span>
+                </span>
+                @Html.TextBoxFor(model => model.PhoneNumber, new { @class = "form-control", placeholder = "Numer telefonu", @Value = (Model.PhoneNumber == null) ? "" : Model.PhoneNumber })
+
+            </div>
+        </div>
+
+
+        @Html.ValidationMessageFor(model => model.CellNumber, null, new { @class = "text-danger" })
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.CellNumber, new { @class = "sr-only" })
+            <div class="col-md-8  input-group">
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-phone"></span>
+                </span>
+
+                @Html.TextBoxFor(model => model.CellNumber, new { @class = "form-control", placeholder = "Numer komórkowy", @Value = (Model.CellNumber == null) ? "" : Model.CellNumber })
+
+            </div>
+        </div>
+
+    <div class="col-md-8">
+        <h4 id="procentDataCount">Wypełniłniono 0 danych</h4>
+        <div class="progress progress-striped">
+            <div class="progress-bar progress-bar-info"
+                 role="progressbar" aria-valuenow="0" aria-valuemin="0"
+                 aria-valuemax="100" style="width: 0%">
+
+            </div>
+        </div>
+    </div>
+        <br />
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Zapisz zmiany" class="btn-primary btn btn-default" />
+            </div>
+        </div>
+
+    }
+<br/>
+      
+</div>
+
+
+
+

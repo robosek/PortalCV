@@ -1,0 +1,21 @@
+﻿@model OnlineStoreMVC.Models.Certificate
+
+@using (Ajax.BeginForm(null, null, null, new AjaxOptions() {HttpMethod = "Post"}, new {@class = "certForm"}))
+{
+
+    using (Html.Panel("Certyfikaty", PanelStyle.Primary))
+    {
+        @Html.Hidden("UserName",User.Identity.Name)
+    
+        @Html.LabelFor(model => model.CertificateName)
+
+        @Html.TextBoxFor(model => model.CertificateName, new {@class = "form-control", @placeholder = "MCTS: Windows Server 2008 Active Directory, Configuration "})
+
+        @Html.LabelFor(model => model.CertificateDesc)
+
+        @Html.TextAreaFor(model => model.CertificateDesc, new {@class = "form-control", @placeholder = "Obsługa środowiska windows Server 2008 w sieci Active Directory"})
+
+    }
+
+
+}

@@ -1,0 +1,31 @@
+﻿@model OnlineStoreMVC.Models.Skill
+
+@using (Ajax.BeginForm(null, null, null, new AjaxOptions() { HttpMethod = "Post" }, new { @class = "skillForm" }))
+{
+
+    
+    using (Html.Panel("Umiejętności", PanelStyle.Primary))
+    { 
+        @Html.Hidden("UserName",User.Identity.Name)
+        
+        @Html.LabelFor(model => model.SkillName)
+
+        @Html.TextBoxFor(model => model.SkillName, new { @class = "form-control", @placeholder = "Obsługa Microsoft Office 2010" })
+
+        @Html.LabelFor(model => model.SkillDescription)
+
+        @Html.TextAreaFor(model => model.SkillDescription, new { @class = "form-control", @placeholder = "Sprawnie posluguje się programami takimi jak: Word, Excel i Power point" })
+
+    }
+
+}
+
+
+
+
+
+
+
+
+
+

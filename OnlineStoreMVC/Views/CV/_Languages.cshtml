@@ -1,0 +1,34 @@
+﻿@model OnlineStoreMVC.Models.Language
+
+@using (Ajax.BeginForm(null, null, null, new AjaxOptions() { HttpMethod = "Post" }, new { @class = "langForm" }))
+{
+    using (Html.Panel("Języki", PanelStyle.Primary))
+    {
+
+        <div class="row">
+            <div class="col-md-4">
+                @Html.Hidden("UserName", User.Identity.Name)
+
+                @Html.LabelFor(model => model.LanguageName)
+
+                @Html.TextBoxFor(model => model.LanguageName, new {@class = "form-control", @placeholder = "Angielski"})
+            </div>
+            <div class="col-md-4">
+                @Html.LabelFor(model => model.LanguageSpeakLevel)
+
+                <select class="form-control" name="LanguageSpeakLevel">
+                    <option value="Beginner">Beginner</option>
+                    <option value="Pre-Intermidiate">Pre-Intermidiate</option>
+                    <option value="Intermidiate">Intermidiate</option>
+                    <option value="FCE">FCE</option>
+
+                </select>
+
+            </div>
+
+        </div>
+
+    }
+
+}
+

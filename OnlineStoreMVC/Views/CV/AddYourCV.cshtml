@@ -1,0 +1,216 @@
+﻿<script src="~/Scripts/jquery-1.10.2.js"></script>
+<script src="~/Scripts/jquery.unobtrusive-ajax.js"></script>
+@{
+    ViewData["PageID"] = "Main";
+}
+<div style="width: 100%; height: 100%; background-color: white;">
+<h1>Stwórz swoje wyjątkowe CV</h1>
+<br />
+<br />
+<div id="transactionInfo" class="alert alert-danger alert-Dismissible" role="alert" style="display: none">
+    <button type="button" class="close" onclick="$('.alert').hide();">
+        <span aria-hidden="true">&times;</span><span class="sr-only">Close</span>
+    </button>
+    <span id="alertText"><b></b></span>
+</div>
+
+<h4><b>Zawód</b></h4>
+<hr>
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+        <div id="hobby">
+            @{ Html.RenderPartial("_Profession"); }
+        </div>
+    </div>
+</div>
+<h4><b>Doświadczenia zawodowe</b> (Postaraj się dodawać doświadczenia w kolejności od najstarszego)</h4>
+<hr>
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+
+        @Ajax.ActionLink(" ", "_Experiences", "CV", new AjaxOptions() {InsertionMode = InsertionMode.InsertBefore, HttpMethod = "Post", UpdateTargetId = "experiences"}, new {@class = "btn btn-default glyphicon glyphicon-plus-sign"})
+        <span>Dodaj nowe</span>
+        <br/>
+        <br/>
+        <div id="experiences">
+            @{ Html.RenderPartial("_Experiences"); }
+        </div>
+    </div>
+</div>
+
+<h4><b>Edukacja</b>(Wypisz swoje wszystkie szkoły poczynając od średniej)</h4>
+<hr>
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+
+        @Ajax.ActionLink(" ", "_Education", "CV", new AjaxOptions() { InsertionMode = InsertionMode.InsertBefore, HttpMethod = "Post", UpdateTargetId = "educations" }, new { @class = "btn btn-default glyphicon glyphicon-plus-sign" })
+        <span>Dodaj nowe</span>
+        <br />
+        <br />
+        <div id="educations">
+            @{ Html.RenderPartial("_Education"); }
+        </div>
+    </div>
+</div>
+<h4><b>Umiejętności</b></h4>
+<hr>
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+
+        @Ajax.ActionLink(" ", "_Skills", "CV", new AjaxOptions() { InsertionMode = InsertionMode.InsertBefore, HttpMethod = "Post", UpdateTargetId = "skills" }, new { @class = "btn btn-default glyphicon glyphicon-plus-sign" })
+        <span>Dodaj nowe</span>        <br />
+        <br />
+        <div id="skills">
+            @{ Html.RenderPartial("_Skills"); }
+        </div>
+    </div>
+</div>
+
+
+<h4><b>Certyfikaty</b></h4>
+<hr>
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+        @Ajax.ActionLink(" ", "_Certifications", "CV", new AjaxOptions() { InsertionMode = InsertionMode.InsertBefore, HttpMethod = "Post", UpdateTargetId = "cert" }, new { @class = "btn btn-default glyphicon glyphicon-plus-sign" })
+        <span>Dodaj nowe</span>
+        <br />
+        <br />
+        <div id="cert">
+            @{ Html.RenderPartial("_Certifications"); }
+        </div>
+
+    </div>
+</div>
+<h4><b>Znajomości języków</b></h4>
+<hr>
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+        @Ajax.ActionLink(" ", "_Languages", "CV", new AjaxOptions() { InsertionMode = InsertionMode.InsertBefore, HttpMethod = "Post", UpdateTargetId = "lang" }, new { @class = "btn btn-default glyphicon glyphicon-plus-sign" })
+        <span>Dodaj nowe</span>
+        <br />
+        <br />
+        <div id="lang">
+            @{ Html.RenderPartial("_Languages"); }
+        </div>
+
+    </div>
+</div>
+<h4><b>Zainteresowania i hobby</b></h4>
+<hr>
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+        <div id="hobby">
+            @{ Html.RenderPartial("_Hobby"); }
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-7 col-md-offset-2">
+        <input type="submit" class="btn btn-primary btn-lg btn-block" value="Zapisz dane" onclick="submitAllForms()" />
+    </div>
+</div>
+</div>
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js">
+
+</script>
+<script src="~/Scripts/jqueryserializeJSON.js"></script>
+<script type="text/javascript" language="javascript">
+
+
+    function submitAllForms() {
+
+        var experiences = new Array();
+
+        $('.expForm').each(function () {
+
+            experiences.push($(this).serializeJSON());
+
+        });
+
+        var skills = new Array();
+
+        $('.skillForm').each(function () {
+
+            skills.push($(this).serializeJSON());
+
+        });
+
+
+        var certs = new Array();
+
+        $('.certForm').each(function () {
+
+            certs.push($(this).serializeJSON());
+
+        });
+
+
+        var langs = new Array();
+
+        $('.langForm').each(function () {
+
+            langs.push($(this).serializeJSON());
+
+        });
+
+        var edus = new Array();
+
+        $('.eduForm').each(function () {
+
+            edus.push($(this).serializeJSON());
+
+        });
+
+
+
+        var hobby = $('.hobbForm').serializeJSON();
+
+        var prof = $('.profForm').serializeJSON();
+
+        var cvmodel = { Experiences: experiences, Skills: skills, Certificates: certs, Languages: langs, Hobby: hobby, Profession:prof, Educations: edus };
+
+        $.ajax({
+            url: "@Url.Action("AddYourCV", "CV")",
+            type: "POST",
+            contentType: "application/json",
+            data: JSON.stringify(cvmodel)
+
+
+        }).done(function (msg) {
+
+            if (msg.startsWith("Error")) {
+
+                var divsAlert1 = $('.alert-success');
+
+                if (divsAlert1.length > 0) {
+
+                    $('#transactionInfo').removeClass('alert-success').addClass('alert-danger');
+                }
+
+                $('#alertText').text("Wystąpił błąd. " + msg.substring(6));
+                $('#transactionInfo').show();
+            } else {
+                var divsAlert1 = $('.alert-danger');
+
+                if (divsAlert1.length > 0) {
+
+                    $('#transactionInfo').removeClass('alert-danger').addClass('alert-success');
+                }
+
+
+                $('#alertText').text("Dane zapisano poprawnie");
+                $('#transactionInfo').show();
+                window.location.href = "/CV/EditCv";
+
+            }
+
+        });
+
+
+    }
+
+
+</script>
+
