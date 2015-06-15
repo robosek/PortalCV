@@ -55,7 +55,8 @@ namespace OnlineStoreMVC.Controllers
 
                         if (userFromDb == null)
                         {
-                            db.Users.Add(new UserViewModel { Nickname = model.UserName });
+                            //if user does not have nickname and created date in custom db, add it
+                            db.Users.Add(new UserViewModel { Nickname = model.UserName, Created = DateTime.Now.ToString() });
                             db.SaveChanges();
                             userFromDb = db.Users.FirstOrDefault(x => x.Nickname == model.UserName);
 
@@ -135,7 +136,8 @@ namespace OnlineStoreMVC.Controllers
                 {
                     using (EntityDbContext db = new EntityDbContext())
                     {
-                        db.Users.Add(new UserViewModel { Nickname = model.UserName });
+                        //add nickname and created date to custom db
+                        db.Users.Add(new UserViewModel { Nickname = model.UserName, Created = DateTime.Now.ToString() });
 
                         db.SaveChanges();
                     }

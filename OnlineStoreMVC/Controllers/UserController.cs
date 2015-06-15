@@ -333,6 +333,11 @@ namespace OnlineStoreMVC.Controllers
             return PartialView("_PhotoPath");
 
         }
+        [Authorize(Roles = "Admin")]
+        public ActionResult UserStatistics()
+        {
+            return View();
+        }
 
 
     }

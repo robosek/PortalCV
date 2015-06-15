@@ -75,12 +75,24 @@
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Net.Http.Formatting, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.0.0\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
     <Reference Include="System.Web.ApplicationServices" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Web.Http, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.0.0\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost, Version=5.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.0.0\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Web" />
     <Reference Include="System.Web.Extensions" />
@@ -183,11 +195,13 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
+    <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CVController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\SearchController.cs" />
+    <Compile Include="Controllers\StatisticsController.cs" />
     <Compile Include="Controllers\UserController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -201,6 +215,7 @@
     <Compile Include="Models\Certificate.cs" />
     <Compile Include="Models\CV.cs" />
     <Compile Include="Models\CvModel.cs" />
+    <Compile Include="Models\DataFactories\CvDataFactory.cs" />
     <Compile Include="Models\Education.cs" />
     <Compile Include="Models\EntityDbContext.cs" />
     <Compile Include="Models\EntityInitializator.cs" />
@@ -221,15 +236,13 @@
     <Content Include="App_Data\aspnet-OnlineStoreMVC-20150324054828_log.ldf">
       <DependentUpon>aspnet-OnlineStoreMVC-20150324054828.mdf</DependentUpon>
     </Content>
-    <Content Include="App_Data\OnlineStoreMVC.Models.EntityDbContext.mdf" />
-    <Content Include="App_Data\OnlineStoreMVC.Models.EntityDbContext_log.ldf">
-      <DependentUpon>OnlineStoreMVC.Models.EntityDbContext.mdf</DependentUpon>
-    </Content>
+    <Content Include="Content\angular-material.min.css" />
     <Content Include="Content\base.css" />
     <Content Include="Content\bootstrap-theme.css" />
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\c3.min.css" />
     <Content Include="Content\default.css" />
     <Content Include="Content\elements.css" />
     <Content Include="Content\font-awesome.css" />
@@ -241,6 +254,7 @@
     <Content Include="Content\PagedList.css" />
     <Content Include="Content\paperEffect.css" />
     <Content Include="Content\Slider.css" />
+    <Content Include="Content\statstyle.css" />
     <Content Include="Content\switcher.css" />
     <Content Include="Content\themes\base\images\ui-bg_flat_0_aaaaaa_40x100.png" />
     <Content Include="Content\themes\base\images\ui-bg_flat_75_ffffff_40x100.png" />
@@ -284,6 +298,7 @@
     <Content Include="Content\bootstrap.css.map" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="README.txt" />
+    <Content Include="Scripts\ng\app.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\bootstrap.validate.js" />
@@ -304,6 +319,8 @@
     <Content Include="Scripts\json-serialize.js" />
     <Content Include="Scripts\json-serialize.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
+    <Content Include="Scripts\ng\controllers\MainController.js" />
+    <Content Include="Scripts\ng\services\statistics.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />
     <Content Include="Scripts\Slider.js" />
@@ -351,6 +368,7 @@
     <Content Include="Views\CV\EditCv.cshtml" />
     <Content Include="Views\CV\_Profession.cshtml" />
     <Content Include="Views\CV\_Education.cshtml" />
+    <Content Include="Views\User\UserStatistics.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

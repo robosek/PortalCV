@@ -99,6 +99,8 @@ namespace OnlineStoreMVC.Models
         public String BrowserType { get; set; }
         [Display(Name = "Ilosć odwiedzin")]
         public int VisitCount { get; set; }
+        //Date of account creation
+        public String Created { get; set; }
 
       
         
