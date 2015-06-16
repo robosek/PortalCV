@@ -8,13 +8,8 @@
 <link href="~/Content/font-awesome.css" rel="stylesheet" />
 <link href="~/Content/default.css" rel="stylesheet" />
 <link href="~/Content/paperEffect.css" rel="stylesheet" />
-@if (ViewBag.UserIsEmpty != null)
-{
-    <h1>Aby wygerować CV wypełni podastawowe dane w zakładce @Html.ActionLink("Edytuj profil", "Index", "User")</h1>
-}
-else
-{
-    <h2>Moje CV</h2>
+
+    @*<h2>Moje CV</h2>
     <div id="cvManage">
         <div class="modal fade" id="deleteConfirmationModal" tabindex="-1" role="dialog" aria-hidden="true">
             <div class="modal-dialog">
@@ -74,7 +69,7 @@ else
         }
     </div>
     <br />
-    <br />
+    <br />*@
     <div class="paper effect2" style="width: 100%; height: 100%; background-color: white;">
         <div id="header">
             <div class="row cv-section">
@@ -146,7 +141,7 @@ else
 
                     }
                     <!-- end .cv-item -->
-                  <!-- end .cv-item -->
+                    <!-- end .cv-item -->
 
                 </div><!-- end .span9 -->
             </div><!-- end .cv-section -->
@@ -173,13 +168,13 @@ else
 
                             <br>
 
-                         
+
 
                         </div>
 
                     }
                     <!-- end .cv-item -->
-                  <!-- end .cv-item -->
+                    <!-- end .cv-item -->
 
                 </div><!-- end .span9 -->
             </div><!-- end .cv-section -->
@@ -324,4 +319,3 @@ else
 
         </div><!-- end #footer -->
     </div>
-}

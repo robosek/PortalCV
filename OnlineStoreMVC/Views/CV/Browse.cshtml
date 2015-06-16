@@ -1,0 +1,117 @@
+﻿@model PagedList.IPagedList<OnlineStoreMVC.Models.UserViewModel>
+@using Microsoft.AspNet.Identity
+@using PagedList.Mvc;
+@{
+    OnlineStoreMVC.Models.UserViewModel c = new OnlineStoreMVC.Models.UserViewModel();
+    ViewData["PageID"] = "Main";
+}
+@{String urlString = null;}
+
+
+
+<style>
+    table {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+    }
+
+    .category {
+        margin-top: 20px;
+        margin-bottom: 10px;
+        background-color: #3C85E7;
+        opacity: 0.95;
+        text-align: center;
+        padding: 20px;
+    }
+    .category:hover {
+        opacity: 0.6;
+    }
+    .category a {
+        text-decoration: none;
+        color: white;
+    }
+</style>
+
+
+<div class="col-md-2 category">
+    @Html.ActionLink("Administracja", "Browse", "CV", new { id = "Administracja" }, null)
+</div>
+<div class="col-md-2 category">
+    @Html.ActionLink("Rachunkowość", "Browse", "CV", new { id = "Rachunkowość" }, null)
+</div>
+<div class="col-md-2 category">
+    @Html.ActionLink("Mechanika", "Browse", "CV", new { id = "Mechanika" }, null)
+</div>
+<div class="col-md-2 category">
+    @Html.ActionLink("Gastronomia", "Browse", "CV", new { id = "Gastronomia" }, null)
+</div>
+<div class="col-md-2 category">
+    @Html.ActionLink("Informatyka", "Browse", "CV", new { id = "Informatyka" }, null)
+</div>
+<div class="col-md-2 category">
+    @Html.ActionLink("Zarządzanie", "Browse", "CV", new { id = "Zarządzanie" }, null)
+</div>
+
+                        @if (ViewData["branch"] == null)
+                        {
+                            <h3>Wszyscy kandydaci</h3>
+                        }
+                        else
+                        {
+                            <h3>Kandydaci z branży @ViewData["branch"]</h3>
+                        }
+
+
+                        <table class="table table-striped table-bordered table-hover">
+
+                            <tbody>
+                                @foreach (var item in Model)
+                                {
+
+                                    <tr>
+                                        <td>
+                                            <div style="display: inline-block;">
+                                                @if (System.IO.File.Exists(Server.MapPath("/Content/Uploads/Users/" + "min_" + item.Nickname + ".jpg")))
+                                                {
+                                                    <img src="@Url.Content("~/Content/Uploads/Users/" + "min_" + item.Nickname + ".jpg")" alt="@item.Name @item.Surname" width="60" height="60" class="img-rounded img-responsive" />
+
+                                                }
+                                                else
+                                                {
+                                                    <img src="@Url.Content("~/Content/Uploads/Users/unknown.png")" alt="@item.Name @item.Surname" width="60" height="60" class="img-rounded img-responsive" />
+                                                }
+                                            </div>
+                                            <div style="display: inline-block;margin-left: 25px;">
+                                                @if (item.Name != null && item.Surname != null)
+                                                {
+                                                    <h3>@Html.DisplayFor(modelItem => item.Name) @Html.DisplayFor(modelItem => item.Surname)</h3>
+                                                }
+                                                else
+                                                {
+                                                    <h3>@Html.DisplayFor(modelItem => item.Nickname)</h3>
+                                                }
+                                            </div>
+                                            <div style="float:right; margin-top:30px;">
+                                                @*@Html.ActionLink("Zobacz CV", "View", "CV", new { id=item.Nickname }, null)*@
+                                                <button type="button" class="btn btn-primary" onclick="location.href='@Url.Action("View", "CV", new { id=item.Nickname })'">Zobacz CV</button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                }
+
+                            </tbody>
+                        </table>
+                        <br />
+                        <div style="text-align:center;">
+                            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)
+                            of @Model.PageCount
+                        </div>
+
+                        @Html.PagedListPager(Model, page => Url.Action("Browse", new
+{
+    page
+}), PagedListRenderOptions.TwitterBootstrapPager)
+
+
+
+
+

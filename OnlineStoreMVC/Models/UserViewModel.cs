@@ -101,7 +101,8 @@ namespace OnlineStoreMVC.Models
         public int VisitCount { get; set; }
         //Date of account creation
         public String Created { get; set; }
-
+        [Display(Name = "Branża")]
+        public String Branch { get; set; }
       
         
 

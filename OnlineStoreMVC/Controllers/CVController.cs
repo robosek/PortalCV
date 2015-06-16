@@ -3,6 +3,8 @@ using System.Linq;
 using System.Web.Mvc;
 using OnlineStoreMVC.Models;
 using System.Globalization;
+using System.Collections.Generic;
+using PagedList;
 
 namespace OnlineStoreMVC.Controllers
 {
@@ -293,6 +295,81 @@ namespace OnlineStoreMVC.Controllers
         {
             return PartialView();
         }
+
+        [Authorize]
+        public ActionResult AddBranch(FormCollection collection)
+        {
+            EntityDbContext db = new EntityDbContext();
+            var user = db.Users.First(x => x.Nickname == User.Identity.Name);
+            user.Branch = collection["Branch"];
+            //user.Branch = "Admin";
+            db.SaveChanges();
+            return RedirectToAction("EditCv");
+        }
+
+        //Branch specified as ID to use existing routing (CV/Browse/Informatyka)
+        public ActionResult Browse(string ID, int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            EntityDbContext db = new EntityDbContext();
+            List<UserViewModel> users;
+            List<UserViewModel> result = new List<UserViewModel>();
+            //show all branches when branch is not specified
+            if (ID == null)
+            {
+                users = db.Users.OrderBy(x => x.UserID).ToList();
+            }
+            else
+            {
+                users = db.Users.Where(x => x.Branch == ID).OrderBy(x => x.UserID).ToList();
+            }
+            //select only users that have cvs
+            foreach (UserViewModel user in users)
+            {
+                var cv = db.Cvs.FirstOrDefault(x => x.UserName == user.Nickname);
+                if (cv != null && cv.hasCV) result.Add(user);
+            }
+            //display branch name
+            ViewData["branch"] = ID;
+            return View(result.ToPagedList(pageNumber, pageSize));
+
+        }
+        //UserName specified as ID to use existing routing (CV/View/pawel)
+        public ActionResult View(string ID)
+        {
+            var db = new EntityDbContext();
+            var user = db.Users.FirstOrDefault(x => x.Nickname == ID);
+            var cv = db.Cvs.FirstOrDefault(x => x.UserName == ID);
+            if (user == null || cv == null || !cv.hasCV) return RedirectToAction("Index", "Home");
+
+            String userName = user.Nickname;
+
+            //create Cv Model
+            var exp = db.Experiences.Where(x => x.UserName == userName).ToList();
+            var hob = db.Hobbies.FirstOrDefault(x => x.UserName == userName) ?? new Hobby() { HobbyDesc = " " };
+            var cert = db.Certificates.Where(x => x.UserName == userName).ToList();
+            var lang = db.Languages.Where(x => x.UserName == userName).ToList();
+            var skill = db.Skills.Where(x => x.UserName == userName).ToList();
+            var prof = db.Professions.FirstOrDefault(x => x.UserName == userName) ?? new Profession() { ProfessionName = " " };
+            var edus = db.Educations.Where(x => x.UserName == userName).ToList();
+
+            CvModel cvModel = new CvModel()
+            {
+                Experiences = exp,
+                Certificates = cert,
+                Languages = lang,
+                Skills = skill,
+                Hobby = hob,
+                Profession = prof,
+                Educations = edus
+
+            };
+            var tuple = new Tuple<CvModel, UserViewModel>(cvModel, user);
+
+            return View(tuple);       
+        }
+
 
 	}
 }

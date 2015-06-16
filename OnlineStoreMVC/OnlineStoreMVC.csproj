@@ -369,6 +369,8 @@
     <Content Include="Views\CV\_Profession.cshtml" />
     <Content Include="Views\CV\_Education.cshtml" />
     <Content Include="Views\User\UserStatistics.cshtml" />
+    <Content Include="Views\CV\Browse.cshtml" />
+    <Content Include="Views\CV\View.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
