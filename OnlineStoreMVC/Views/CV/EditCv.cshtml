@@ -53,17 +53,17 @@ else
             </div>
         </div>
 
-        @using (Html.BeginForm(null, null, FormMethod.Post, new { @class = "form-inline" }))
+        @using (Html.BeginForm("AddBranch", "CV", FormMethod.Post, new { @class = "form-inline" }))
         {
             <span>Wybierz swój sektor pracy</span>
             <div class="form-group">
-                <select class="form-control" name="LanguageSpeakLevel">
+                <select class="form-control" name="Branch">
                     <option value="Administracja">Administracja</option>
                     <option value="Rachunkowość">Rachunkowość</option>
                     <option value="Mechanika">Mechanika</option>
                     <option value="Gastronomia">Gastronomia</option>
                     <option value="Informatyka">Informatyka</option>
-                    <option value="Informatyka">Zarządzanie</option>
+                    <option value="Zarządzanie">Zarządzanie</option>
                 </select>
             </div>
             <br />

@@ -3,6 +3,8 @@ using System.Linq;
 using System.Web.Mvc;
 using OnlineStoreMVC.Models;
 using System.Globalization;
+using System.Collections.Generic;
+using PagedList;
 
 namespace OnlineStoreMVC.Controllers
 {
@@ -292,6 +294,37 @@ namespace OnlineStoreMVC.Controllers
         public ActionResult _Education()
         {
             return PartialView();
+        }
+        [Authorize]
+        public ActionResult AddBranch(FormCollection collection)
+        {
+            EntityDbContext db = new EntityDbContext();
+            var user = db.Users.First(x => x.Nickname == User.Identity.Name);
+            user.Branch = collection["Branch"];
+            //user.Branch = "Admin";
+            db.SaveChanges();
+            return RedirectToAction("EditCv");
+        }
+
+        //Branch specified as ID to use existing routing (CV/Browse/Informatyka)
+        public ActionResult Browse(string ID, int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            EntityDbContext db = new EntityDbContext();
+            List<UserViewModel> users;
+
+            if (ID == null)
+            {
+                users = db.Users.OrderBy(x => x.UserID).ToList();
+            }
+            else
+            {
+                users = db.Users.Where(x => x.Branch == ID).OrderBy(x => x.UserID).ToList();
+            }
+            ViewData["branch"] = ID;
+            return View(users.ToPagedList(pageNumber, pageSize));
+
         }
 
 	}

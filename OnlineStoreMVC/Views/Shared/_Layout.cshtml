@@ -76,7 +76,7 @@
                     <li style="height: 70px; padding-top: 10px;">@Html.ActionLink("Strona główna", "Index", "Home")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <li style="height: 70px; padding-top: 10px;">@Html.ActionLink("Kandydaci", "Index", "Home")</li>
+                        <li style="height: 70px; padding-top: 10px;">@Html.ActionLink("Kandydaci", "Browse", "CV")</li>
                     }
                     <li style="height: 70px; padding-top: 10px;">@Html.ActionLink("Kontakt", "Index", "Home")</li>
 

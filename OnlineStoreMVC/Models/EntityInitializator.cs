@@ -9,7 +9,8 @@ namespace OnlineStoreMVC.Models
         protected override void Seed(EntityDbContext context)
         {
             //Generate fake data for statistics controller tests          
-            
+            context.Database.Delete();
+            context.Database.Create();
             CvDataFactory cvDataFactory = new CvDataFactory(context);
             cvDataFactory.generateCvData(10);
         }
