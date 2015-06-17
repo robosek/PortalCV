@@ -19,6 +19,10 @@ namespace OnlineStoreMVC.Controllers
             return RedirectToAction("Index", fromcontroller);
 
         }
+        public ActionResult Search(FormCollection collection)
+        {
+            return RedirectToAction("Search", "CV", new { ID = collection["query"] });
+        }
 
 
     }

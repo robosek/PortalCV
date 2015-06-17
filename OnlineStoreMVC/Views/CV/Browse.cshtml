@@ -51,9 +51,13 @@
     @Html.ActionLink("Zarządzanie", "Browse", "CV", new { id = "Zarządzanie" }, null)
 </div>
 
-                        @if (ViewData["branch"] == null)
+                        @if (ViewData["query"] != null)
                         {
-                            <h3>Wszyscy kandydaci</h3>
+                            <h3>Kandydaci dla zapytania '@ViewData["query"]'</h3>
+                        }
+                        else if (ViewData["query"] == null && ViewData["branch"] == null)
+                        {
+                            <h3>Wszyscy kandydaci</h3>   
                         }
                         else
                         {

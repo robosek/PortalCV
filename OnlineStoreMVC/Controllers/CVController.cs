@@ -369,7 +369,33 @@ namespace OnlineStoreMVC.Controllers
 
             return View(tuple);       
         }
-
+        //query specified as ID to use existing routing (CV/Search/pawel)
+        public ActionResult Search(string ID, int? page)
+        {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+            EntityDbContext db = new EntityDbContext();
+            List<UserViewModel> users;
+            List<UserViewModel> result = new List<UserViewModel>();
+            //show all users when query is not specified
+            if (ID == null)
+            {
+                users = db.Users.OrderBy(x => x.UserID).ToList();
+            }
+            else
+            {
+                users = db.Users.Where(x => x.Nickname.Contains(ID) || x.Name.Contains(ID) || x.Surname.Contains(ID)).OrderBy(x => x.UserID).ToList();
+            }
+            //select only users that have cvs
+            foreach (UserViewModel user in users)
+            {
+                var cv = db.Cvs.FirstOrDefault(x => x.UserName == user.Nickname);
+                if (cv != null && cv.hasCV) result.Add(user);
+            }
+            //display query
+            ViewData["query"] = ID;
+            return View("Browse",result.ToPagedList(pageNumber, pageSize));
+        }
 
 	}
 }
